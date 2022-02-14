@@ -1,183 +1,187 @@
 /***  KNOWLEDGE IS POWER  ***/
 
-#include<bits/stdc++.h>
-
+#include<iostream>
+#include<string>
 using namespace std;
- 
-struct Node
+
+struct node
 {
-    Node *left, *right;
-    int data , lbit , rbit ;
+    char opr ;
+    node* next ;
 };
 
-Node *insert(Node *root, int data)
+class stack
 {
-    Node *temp = root ;
-    Node *parent = NULL ; 
-    while(temp)
-    {
-        if(data == (temp->data))
+    node* top ;
+    public:
+        stack( ) // Initialisation
         {
-            cout << "Data already exist" ;
-            return root ;
+            top = NULL ;
         }
-        parent = temp ;  
-        if(data > temp->data)
+        bool empty()
         {
-        	if(temp->rbit == 0)
-            {    
-            	temp = temp->right ; 
+            if(top == NULL) // No element added
+            {
+                return true ;
+            }
+            return false ;
+        }
+        
+        void push(char c)
+        {
+            node *n ;
+            n = new node ;
+            n->opr = c ; // Assign value 
+            n->next = top ; // Assign address of previous top
+            top = n ; // Change this new node to top
+        }
+        
+        char pop() // Pops element and also returns top value
+        {
+            if(!empty())
+            {
+                node *n ;
+                n = new node ;
+                n = top ;
+                top = top->next ;
+                char top_value = n->opr ;  
+                delete n ;
+                return top_value ;
             }
             else
             {
-            	break ;
+                return 0 ;
             }
+        }
+        char topchar( )
+        {
+            if(!empty())
+            {
+                node *n ;
+                n = new node ;
+                n = top ;
+                char top_value = n->opr ;  
+                return top_value ;
+            }
+            else
+            {
+                return 0 ;
+            }
+        }
+};
+
+// --- --- //
+int findPrecedence(char ch)
+{
+    if(ch == '*' || ch == '/') // Highest Precedence
+    {
+        return 2 ;
+    }
+    else if(ch == '+' || ch == '-')
+    {
+        return 1 ;
+    }
+    return -1 ;
+}
+
+// --- CONVERSION --- //
+
+string infixToPostfix(string expression)
+{
+    stack s ;
+    char t ; // char value of top
+    string ans = "" ;
+    for(int i = 0 ; i < expression.length() ; i++)
+    {
+        char val = expression[i] ;
+        if(isalnum(val)) // Operand
+        {
+            ans += val ;
         }
         else
         {
-            if(temp->lbit == 0)
-            {    
-            	temp = temp->left ;
+            if(val == '(')
+            {
+                s.push(val) ;
             }
             else
             {
-            	break ;
+                if(val == ')')
+                {
+                    while((t = s.pop()) != '(')
+                    {
+                        ans += t ;
+                    }
+                }
+                else // Operator
+                {
+                    t = s.topchar() ;
+                    while(!s.empty() && findPrecedence(val) <= findPrecedence(t))
+                    {
+                        t = s.pop() ;
+                        ans += t ;
+                    }
+                    s.push(val) ; // Add element of higher Precedence
+                }
             }
         }
     }
-    Node *tmp = new Node;
-    tmp->data = data ;
-    tmp->lbit = 1 , tmp->rbit = 1 ;
-    if(!parent)
+    while(!s.empty())
     {
-        root = tmp ;
-        tmp->left = NULL ;
-        tmp->right = NULL ;
+        t = s.pop() ;
+        ans += t ;
     }
-    else if(data < (parent->data))
-    {
-        tmp->left = parent->left ;
-        tmp->right = parent ;
-        parent->lbit = 0 ;
-        parent->left = tmp ;
-    }
-    else
-    {
-        tmp->left = parent ;
-        tmp->right = parent->right ;
-        parent->rbit = 0 ; 
-        parent->right = tmp ;
-    }
-    return root ;
+    return ans ;
 }
-//================== Printing ==================//
-void preorder(Node* root)
+string infixToPrefix(string expression)
 {
-	cout << "PREORDER TRAVERSAL\n" ;
-    if(!root)
-    {
-        cout << "Tree is Empty" ;
-        return ;
-    }
-    Node* temp=root;
-    while(temp) 
-    {
-        cout << temp->data << " " ;
-        while(temp->lbit == 0) 
-        {		
-            temp = temp->left; 
-            cout << temp->data << " " ;		
-        }
-        while(temp->rbit == 1 && temp->right) 
-        {
-            temp = temp->right ;
-        }	
-        temp = temp->right ;		
-    }
+	reverse(expression.begin() , expression.end()) ;
+	string s = infixToPostfix(expression) ;
+	reverse(s.begin() , s.end()) ;
+	return s ;
 }
-Node *inorderSuccessor(Node *t)
+// -- 
+void menu()
 {
-    if(t->rbit == 1)
-    {
-        return t->right ;
-    }
-    t = t -> right ;
-    while(t -> lbit == 0)
-    {
-    	t = t -> left ;
-    }
-    return t ;
-}
-void inorder(Node *root)
-{
-	cout << "INORDER TRAVERSAL\n" ;
-    if(!root)
-    {
-    	cout << "Tree is Empty" ;
-    }
-    struct Node *temp = root ;
-    while(temp->lbit == 0)
-    {
-    	temp = temp->left ;
-    } 
-    while(temp)
-    {
-        cout << temp->data << " " ;
-        temp = inorderSuccessor(temp) ;
-    }
-}
-//================== ==================//
-//====================== MAIN =====================//
-void menu( )
-{
-	cout << "\nChoose Your Operation:\n" ;
-    cout << "1.Insert Nodes\n" ;
-    cout << "2.Display Tree. (PREORDER TRAVERSAL)\n" ;
-    cout << "3.Display Tree. (INORDER TRAVERSAL)\n" ;
-    cout << "4.Exit Program\n" ;
+    cout << "\nChoose Your Operation:\n" ;
+    cout << "1.Infix to Prefix\n" ;
+    cout << "2.Infix to Postfix\n" ;
+    cout << "3.Exit Program\n" ;
     cout << "Enter you choice: " ;
 }
+// -- 
+// --- MAIN --- //
 int main()
 {
-    Node *root = NULL ;
+    string infix  ;
     while(true)
     {
-    	menu() ;
+        menu() ;
         int choice ;
         cin >> choice ;
-        cout << "\n" ;
         if(choice == 1)
         {
-            cout<<"Enter number element to be insert : ";
-            int sz ;
-            cin >> sz ;
-            cout << "Enter " << sz << " elements : \n" ;
-            while(sz--)
-            {
-            	int data ;   
-            	cin >> data ;
-                root = insert(root , data) ;
-            }
+            cout << "Enter the Infix expression : " << "\n" ;
+            cin >> infix ;
+        	cout << "\nPrefix Expression is: " << infixToPrefix(infix) ;
         }
         else if(choice == 2)
         {
-            preorder(root);
+            cout << "Enter the Infix expression : " << "\n" ;
+            cin >> infix ;
+        	cout << "\nPostfix Expression is: " << infixToPostfix(infix) ;
         }
         else if(choice == 3)
-        {
-            inorder(root) ;
-        }
-        else if(choice == 4)
         {
             cout << "Thank You!" ;
             break ;
         }
         else
         {
-            cout << "Invalid Choice! Please Try Again." ;
+            cout << "Invalid choice. Try Again\n" ;
         }
     }
-    return 0;
+    return 0 ;
 }
 
 /***  END   ***/
