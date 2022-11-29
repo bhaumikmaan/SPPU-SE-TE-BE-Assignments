@@ -1,6 +1,6 @@
 
-<h1 align="middle"> :grey_exclamation: SPPU Second Year Assignments :grey_exclamation: </h1>
-<p align ="middle"> A repository for assignments in Second year of Information Technology of SPPU! <br>
+<h1 align="middle"> :grey_exclamation: SPPU SE & TE Assignments :grey_exclamation: </h1>
+<p align ="middle"> A repository for assignments in Second year and Third year of Information Technology of SPPU! <br>
 <b><i>Do star the Repository if you feel it helped & drop a follow!</b></i><br><br>
 <i>Please refer to the README's or Lab Manuals to find the assignment you wish for. </i> <br>
 :black_heart: <b> Happy Learning </b> :black_heart:
@@ -14,4 +14,7 @@
 | 3 | [Semester 4 COMPUTER GRAPHICS LAB](https://github.com/bhaumikmaan/SPPU-Second-Year-Assignments/tree/main/Semester%204/Computer%20Graphics%20Lab) |
 | 4 | [Semester 4 DBMS LAB](https://github.com/bhaumikmaan/SPPU-Second-Year-Assignments/tree/main/Semester%204/DBMS%20Lab) |
 | 5 | [Semester 4 PSDL LAB](https://github.com/bhaumikmaan/SPPU-Second-Year-Assignments/tree/main/Semester%204/PSDL%20Lab)|
+| 6 | [Semester 5 DAA LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%205/DAA) |
+| 7 | [Semester 5 MACHINE LEARNING LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%205/ML)|
+| 8 | [Semester 5 OPEARTING SYSTEM LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%205/OS)|
 
