@@ -1,0 +1,76 @@
+# Open a new terminal (For Hbase)
+$hbase shell
+create 'hbase_flight', 'cf'  #In HBASE SHELL
+
+# In a new terminal (For Hive)
+$hive
+
+create database db;
+
+use db;
+
+create table air_flight(fno int, year int, dest varchar(10),  delay float);
+
+alter table air_flight rename to flight;
+
+alter table flight add columns (source varchar(10));
+
+alter table flight change source src varchar(10);
+
+drop table flight; 
+
+#
+
+//create 'hbase_flight', 'cf'  #In HBASE SHELL
+
+create table flight (fno int, year int, dest varchar(10), delay float)
+> row format delimited
+> fields terminated by ','
+> lines terminated by '\n'
+> stored as textfile;
+
+** create flight_data.txt in HOME**
+123, 2002, "patna", 30.0
+add similar values
+
+
+load data local inpath "flight_data.txt"
+> overwrite into table flight;
+
+//insert into flight values(123, 2002, "patna", 30.0);
+
+create external table hflight(fno int, year int, dest varchar(10), delay float)
+> stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+> with SERDEPROPERTIES ("hbase.columns.mapping" = ":key, cf:year, cf:dest, cf:delay")
+> TBLPROPERTIES ("hbase.table.name" = "hbase_flight");
+
+insert into hflight select * from flight;
+
+scan 'hbase_flight'  #In HBASE SHELL
+
+#
+
+create table n_flight (fno int, year int, source varchar(10))
+> row format delimited
+> fields terminated by ','
+> lines terminated by '\n'
+> stored as textfile;
+
+load data local inpath "n_flight_data.txt"
+> overwrite into table n_flight;
+
+select a.fno, a.year, a.dest, a.delay, b.source
+> from flight a join n_flight b
+> on (a.fno = b.fno);
+
+#
+
+create index flight_index on table flight(fno)
+> as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler'
+> WITH DEFERRED REBUILD;
+
+#
+
+select avg(delay) from flight where year = 2008;
+
+	
