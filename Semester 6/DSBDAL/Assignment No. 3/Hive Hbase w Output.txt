@@ -1,0 +1,713 @@
+Time taken: 2.074 seconds
+hive> use db1;
+OK
+Time taken: 0.149 seconds
+hive> create table flight (fno int, year int, dest varchar(10), delay float);
+OK
+Time taken: 0.476 seconds
+hive> alter table flight rename to air_flight;
+OK
+Time taken: 0.235 seconds
+hive> alter table air_flight add columns (source varchar(10));
+OK
+Time taken: 0.144 seconds
+hive> alter table air_flight change source src varchar(15);
+OK
+Time taken: 0.152 seconds
+hive> drop table flight;
+OK
+Time taken: 0.032 seconds
+hive> desc air_flight;
+OK
+fno                 	int                 	                    
+year                	int                 	                    
+dest                	varchar(10)         	                    
+delay               	float               	                    
+src                 	varchar(15)         	                    
+Time taken: 0.22 seconds, Fetched: 5 row(s)
+hive> desc flight;
+FAILED: SemanticException [Error 10001]: Table not found flight
+hive> create table flight (fno int, year int, dest varchar(10), delay float)
+    > row format delimited
+    > fields terminated by ','
+    > limes terminated by '\n'
+    > stored as textfile;
+NoViableAltException(26@[1750:103: ( tableRowFormatMapKeysIdentifier )?])
+	at org.antlr.runtime.DFA.noViableAlt(DFA.java:158)
+	at org.antlr.runtime.DFA.predict(DFA.java:144)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.rowFormatDelimited(HiveParser.java:33960)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.tableRowFormat(HiveParser.java:34195)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.createTableStatement(HiveParser.java:4979)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2355)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1579)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1057)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:199)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:393)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:307)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1110)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1158)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1047)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1037)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:207)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:159)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:370)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:756)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:675)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: ParseException line 4:0 cannot recognize input near 'limes' 'terminated' 'by' in serde properties specification
+hive> [cloudera@quickstart ~]$ hive
+
+Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+WARNING: Hive CLI is deprecated and migration to Beeline is recommended.
+hive> create table flight (fno int, year int, dest varchar(10), delay float)
+    > row format delimited
+    > fields terminated by ','
+    > lines terminated by '\n'
+    > stored as textfile;
+OK
+Time taken: 0.638 seconds
+hive> insert into flight values (123, 2009, "Mumbai", 30.0);
+Query ID = cloudera_20230321112525_7e1a07e8-cd0a-4ad9-b4f4-2cbfdd0cff65
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0001, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0001/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:25:47,871 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:25:59,132 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.54 sec
+MapReduce Total cumulative CPU time: 1 seconds 540 msec
+Ended Job = job_1679422097466_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/flight/.hive-staging_hive_2023-03-21_11-25-31_829_3015650500722937693-1/-ext-10000
+Loading data to table default.flight
+Table default.flight stats: [numFiles=1, numRows=1, totalSize=21, rawDataSize=20]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.54 sec   HDFS Read: 4134 HDFS Write: 91 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 540 msec
+OK
+Time taken: 28.96 seconds
+hive> insert into flight values (342, 2008, "Nagpur", 13.0);
+Query ID = cloudera_20230321112727_2cce5283-bc64-4c01-bf6f-8c2919272aa9
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0002, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0002/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:27:17,721 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:27:26,438 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+MapReduce Total cumulative CPU time: 1 seconds 510 msec
+Ended Job = job_1679422097466_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/flight/.hive-staging_hive_2023-03-21_11-27-07_029_363073729690260184-1/-ext-10000
+Loading data to table default.flight
+Table default.flight stats: [numFiles=2, numRows=2, totalSize=42, rawDataSize=40]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.51 sec   HDFS Read: 4228 HDFS Write: 91 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 510 msec
+OK
+Time taken: 20.796 seconds
+hive> 
+[1]+  Stopped                 hive
+[cloudera@quickstart ~]$ hive
+
+Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+WARNING: Hive CLI is deprecated and migration to Beeline is recommended.
+hive> insert into flight values (232, 2008, "Aurangabad", 0.0);
+Query ID = cloudera_20230321113030_69ae8e96-a8ab-4181-b50d-1ec30c51e729
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0003, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0003/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:31:07,716 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:31:16,553 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.47 sec
+MapReduce Total cumulative CPU time: 1 seconds 470 msec
+Ended Job = job_1679422097466_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/flight/.hive-staging_hive_2023-03-21_11-30-53_708_6776354556734475968-1/-ext-10000
+Loading data to table default.flight
+Table default.flight stats: [numFiles=3, numRows=3, totalSize=66, rawDataSize=63]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.47 sec   HDFS Read: 4233 HDFS Write: 94 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 470 msec
+OK
+Time taken: 24.367 seconds
+hive> insert into flight values (103, 2009, "Kolhapur", 10.0);
+Query ID = cloudera_20230321113232_a3047183-ef20-4b8a-8b66-ff2b89275c06
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0004, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0004/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0004
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:32:16,535 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:32:24,396 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.48 sec
+MapReduce Total cumulative CPU time: 1 seconds 480 msec
+Ended Job = job_1679422097466_0004
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/flight/.hive-staging_hive_2023-03-21_11-32-06_098_7878401655328069106-1/-ext-10000
+Loading data to table default.flight
+Table default.flight stats: [numFiles=4, numRows=4, totalSize=89, rawDataSize=85]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.48 sec   HDFS Read: 4232 HDFS Write: 93 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 480 msec
+OK
+Time taken: 20.691 seconds
+hive> select * from flight;
+OK
+123	2009	Mumbai	30.0
+342	2008	Nagpur	13.0
+232	2008	Aurangabad	0.0
+103	2009	Kolhapur	10.0
+Time taken: 0.112 seconds, Fetched: 4 row(s)
+hive> load data local inpath "flight_data.txt"
+    > overwrite into table flight;
+FAILED: SemanticException Line 1:23 Invalid path '"flight_data.txt"': No files matching path file:/home/cloudera/flight_data.txt
+hive> pwd
+    > ;
+NoViableAltException(26@[])
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1020)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:199)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:393)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:307)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1110)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1158)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1047)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1037)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:207)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:159)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:370)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:756)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:675)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: ParseException line 1:0 cannot recognize input near 'pwd' '<EOF>' '<EOF>'
+hive> load data local inpath "flight_input.txt"
+    > overwrite into table flight;
+FAILED: SemanticException Line 1:23 Invalid path '"flight_input.txt"': No files matching path file:/home/cloudera/flight_input.txt
+hive> load data local inpath "/home/cloudera/Dekstop/flight_input.txt"
+    > overwrite into table flight;
+FAILED: SemanticException Line 1:23 Invalid path '"/home/cloudera/Dekstop/flight_input.txt"': No files matching path file:/home/cloudera/Dekstop/flight_input.txt
+hive> load data local inpath "flight_input.txt"
+    > overwrite into table flight;
+Loading data to table default.flight
+Table default.flight stats: [numFiles=1, numRows=0, totalSize=81, rawDataSize=0]
+OK
+Time taken: 0.309 seconds
+hive> select * from flight;
+OK
+1234	2008	pune	34.0
+1235	2008	pune	34.0
+1236	2008	pune	34.0
+1237	2008	pune	34.0
+NULL	NULL	NULL	NULL
+Time taken: 0.064 seconds, Fetched: 5 row(s)
+hive> create table nflight (fno int, year int, source varchar(15))
+    > row format delimited
+    > fields terminated by ','
+    > lines terminated by '\n'
+    > stored as textfile;
+OK
+Time taken: 0.119 seconds
+hive> select * from nflight;
+OK
+Time taken: 0.061 seconds
+hive> insert into nflight values (123, 2009, "Mumbai");
+Query ID = cloudera_20230321115353_cae41ca6-dd6d-491b-a0cb-b8004fec623d
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0005, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0005/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:53:09,736 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:53:18,572 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.46 sec
+MapReduce Total cumulative CPU time: 1 seconds 460 msec
+Ended Job = job_1679422097466_0005
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/nflight/.hive-staging_hive_2023-03-21_11-53-00_345_7470659943040735931-1/-ext-10000
+Loading data to table default.nflight
+Table default.nflight stats: [numFiles=1, numRows=1, totalSize=16, rawDataSize=15]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.46 sec   HDFS Read: 3873 HDFS Write: 87 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 460 msec
+OK
+Time taken: 19.57 seconds
+hive> insert into flight values (4523, 2008, "Mumbai");
+FAILED: SemanticException [Error 10044]: Line 1:12 Cannot insert into target table because column number/types are different 'flight': Table insclause-0 has 4 columns, but query has 3 columns.
+hive> insert into nflight values (2345, 2008, "Mumbai");
+Query ID = cloudera_20230321115555_211e3eb7-21ac-4cc0-8047-990111f02cfe
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0006, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0006/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:55:47,087 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:55:55,690 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+MapReduce Total cumulative CPU time: 1 seconds 500 msec
+Ended Job = job_1679422097466_0006
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/nflight/.hive-staging_hive_2023-03-21_11-55-37_632_5860389295642823028-1/-ext-10000
+Loading data to table default.nflight
+Table default.nflight stats: [numFiles=2, numRows=2, totalSize=33, rawDataSize=31]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.5 sec   HDFS Read: 3962 HDFS Write: 88 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 500 msec
+OK
+Time taken: 19.422 seconds
+hive> insert into flight values (3456, 2007, "Mumbai");
+FAILED: SemanticException [Error 10044]: Line 1:12 Cannot insert into target table because column number/types are different 'flight': Table insclause-0 has 4 columns, but query has 3 columns.
+hive> insert into nflight values (2345, 2007, "Mumbai");
+Query ID = cloudera_20230321115757_92345014-b905-4bc0-bf19-37770524c002
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0007, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0007/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 11:57:22,486 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 11:57:30,284 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.48 sec
+MapReduce Total cumulative CPU time: 1 seconds 480 msec
+Ended Job = job_1679422097466_0007
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/nflight/.hive-staging_hive_2023-03-21_11-57-13_432_4639431966467352384-1/-ext-10000
+Loading data to table default.nflight
+Table default.nflight stats: [numFiles=3, numRows=3, totalSize=50, rawDataSize=47]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.48 sec   HDFS Read: 3962 HDFS Write: 88 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 480 msec
+OK
+Time taken: 19.339 seconds
+hive> select * from nflight;
+OK
+123	2009	Mumbai
+2345	2008	Mumbai
+2345	2007	Mumbai
+Time taken: 0.07 seconds, Fetched: 3 row(s)
+hive> select a.fno, a.year, a.dest, a.delay, b.source
+    > from flight a join nflight b
+    > on (a.fno = b.fno);
+Query ID = cloudera_20230321120303_cafa2c2d-cc17-4781-b7e0-f23c277a7238
+Total jobs = 1
+Execution log at: /tmp/cloudera/cloudera_20230321120303_cafa2c2d-cc17-4781-b7e0-f23c277a7238.log
+2023-03-21 12:03:46	Starting to launch local task to process map join;	maximum memory = 1013645312
+2023-03-21 12:03:48	Dump the side-table for tag: 1 with group count: 2 into file: file:/tmp/cloudera/2b0cf1f5-f7aa-4b82-92cc-0107ee347f57/hive_2023-03-21_12-03-41_044_3692408002240535239-1/-local-10003/HashTable-Stage-3/MapJoin-mapfile01--.hashtable
+2023-03-21 12:03:48	Uploaded 1 File to: file:/tmp/cloudera/2b0cf1f5-f7aa-4b82-92cc-0107ee347f57/hive_2023-03-21_12-03-41_044_3692408002240535239-1/-local-10003/HashTable-Stage-3/MapJoin-mapfile01--.hashtable (326 bytes)
+2023-03-21 12:03:48	End of local task; Time Taken: 1.695 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0008, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0008/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0008
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 0
+2023-03-21 12:03:59,018 Stage-3 map = 0%,  reduce = 0%
+2023-03-21 12:04:07,537 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 1.27 sec
+MapReduce Total cumulative CPU time: 1 seconds 270 msec
+Ended Job = job_1679422097466_0008
+MapReduce Jobs Launched: 
+Stage-Stage-3: Map: 1   Cumulative CPU: 1.27 sec   HDFS Read: 6675 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 270 msec
+OK
+Time taken: 27.591 seconds
+hive> select * from flight;
+OK
+1234	2008	pune	34.0
+1235	2008	pune	34.0
+1236	2008	pune	34.0
+1237	2008	pune	34.0
+NULL	NULL	NULL	NULL
+Time taken: 0.069 seconds, Fetched: 5 row(s)
+hive> select * from nflight;
+OK
+123	2009	Mumbai
+2345	2008	Mumbai
+2345	2007	Mumbai
+Time taken: 0.069 seconds, Fetched: 3 row(s)
+hive> insert into nflight values (1234, 2007, "Mumbai");
+Query ID = cloudera_20230321120707_de242afe-6bd5-438b-bdf2-449704c79744
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0009, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0009/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0009
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 12:07:10,444 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 12:07:21,489 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.49 sec
+MapReduce Total cumulative CPU time: 1 seconds 490 msec
+Ended Job = job_1679422097466_0009
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/nflight/.hive-staging_hive_2023-03-21_12-07-01_146_4620819181868222113-1/-ext-10000
+Loading data to table default.nflight
+Table default.nflight stats: [numFiles=4, numRows=4, totalSize=67, rawDataSize=63]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.49 sec   HDFS Read: 3962 HDFS Write: 88 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 490 msec
+OK
+Time taken: 21.774 seconds
+hive> insert into nflight values (1237, 2007, "Mumbai");
+Query ID = cloudera_20230321120707_58fc5180-9e79-4678-a31e-9a95093bbeeb
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0010, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0010/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0010
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-03-21 12:08:03,393 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 12:08:12,243 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.54 sec
+MapReduce Total cumulative CPU time: 1 seconds 540 msec
+Ended Job = job_1679422097466_0010
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://quickstart.cloudera:8020/user/hive/warehouse/nflight/.hive-staging_hive_2023-03-21_12-07-53_898_5531844646028936184-1/-ext-10000
+Loading data to table default.nflight
+Table default.nflight stats: [numFiles=5, numRows=5, totalSize=84, rawDataSize=79]
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.54 sec   HDFS Read: 3962 HDFS Write: 88 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 540 msec
+OK
+Time taken: 19.674 seconds
+hive> select a.fno, a.year, a.dest, a.delay, b.source
+    > from flight a join nflight b
+    > on (a.fno = b.fno);
+Query ID = cloudera_20230321120808_58422171-3da5-4ba1-b4a3-c982707d74f0
+Total jobs = 1
+Execution log at: /tmp/cloudera/cloudera_20230321120808_58422171-3da5-4ba1-b4a3-c982707d74f0.log
+2023-03-21 12:08:48	Starting to launch local task to process map join;	maximum memory = 1013645312
+2023-03-21 12:08:49	Dump the side-table for tag: 0 with group count: 4 into file: file:/tmp/cloudera/2b0cf1f5-f7aa-4b82-92cc-0107ee347f57/hive_2023-03-21_12-08-42_258_1122463291063121022-1/-local-10003/HashTable-Stage-3/MapJoin-mapfile10--.hashtable
+2023-03-21 12:08:50	Uploaded 1 File to: file:/tmp/cloudera/2b0cf1f5-f7aa-4b82-92cc-0107ee347f57/hive_2023-03-21_12-08-42_258_1122463291063121022-1/-local-10003/HashTable-Stage-3/MapJoin-mapfile10--.hashtable (392 bytes)
+2023-03-21 12:08:50	End of local task; Time Taken: 1.665 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1679422097466_0011, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0011/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0011
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 0
+2023-03-21 12:09:00,196 Stage-3 map = 0%,  reduce = 0%
+2023-03-21 12:09:08,943 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 1.54 sec
+MapReduce Total cumulative CPU time: 1 seconds 540 msec
+Ended Job = job_1679422097466_0011
+MapReduce Jobs Launched: 
+Stage-Stage-3: Map: 1   Cumulative CPU: 1.54 sec   HDFS Read: 7033 HDFS Write: 54 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 540 msec
+OK
+1234	2008	pune	34.0	Mumbai
+1237	2008	pune	34.0	Mumbai
+Time taken: 27.763 seconds, Fetched: 2 row(s)
+hive> create index flight index on table flight(fno)
+    > as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler'
+    > WITH DEFERRED REBUILD;
+FAILED: ParseException line 1:20 extraneous input 'index' expecting ON near '<EOF>'
+hive> create index flight_index on table flight(fno)
+    > as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler'
+    > WITH DEFERRED REBUILD;
+OK
+Time taken: 0.524 seconds
+hive> show tables;
+OK
+default__flight_flight_index__
+empdbnew
+flight
+nflight
+values__tmp__table__1
+values__tmp__table__2
+values__tmp__table__3
+values__tmp__table__4
+values__tmp__table__5
+values__tmp__table__6
+values__tmp__table__7
+values__tmp__table__8
+values__tmp__table__9
+Time taken: 0.158 seconds, Fetched: 13 row(s)
+hive> select avg(delay) from flight where year = 2008;
+Query ID = cloudera_20230321121212_f5020e6d-6059-43b2-baf3-54624960c5c8
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1679422097466_0012, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1679422097466_0012/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1679422097466_0012
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-03-21 12:12:51,202 Stage-1 map = 0%,  reduce = 0%
+2023-03-21 12:12:59,862 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.41 sec
+2023-03-21 12:13:12,655 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 2.79 sec
+MapReduce Total cumulative CPU time: 2 seconds 790 msec
+Ended Job = job_1679422097466_0012
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 2.79 sec   HDFS Read: 8048 HDFS Write: 5 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 790 msec
+OK
+34.0
+Time taken: 31.93 seconds, Fetched: 1 row(s)
+hive> 
+
+
+HBASE :
+
+[cloudera@quickstart ~]$ hbase shell
+2023-03-28 14:09:45,094 INFO  [main] Configuration.deprecation: hadoop.native.lib is deprecated. Instead, use io.native.lib.available
+HBase Shell; enter 'help<RETURN>' for list of supported commands.
+Type "exit<RETURN>" to leave the HBase Shell
+Version 1.0.0-cdh5.4.2, rUnknown, Tue May 19 17:07:29 PDT 2015
+
+hbase(main):001:0> create 'flt'.'info','sch'
+SyntaxError: (hbase):1: syntax error, unexpected tSTRING_BEG
+
+create 'flt'.'info','sch'
+             ^
+
+hbase(main):002:0> create 'flt','info','sch'
+
+ERROR: Table already exists: flt!
+
+Here is some help for this command:
+Creates a table. Pass a table name, and a set of column family
+specifications (at least one), and, optionally, table configuration.
+Column specification can be a simple string (name), or a dictionary
+(dictionaries are described below in main help output), necessarily 
+including NAME attribute. 
+Examples:
+
+Create a table with namespace=ns1 and table qualifier=t1
+  hbase> create 'ns1:t1', {NAME => 'f1', VERSIONS => 5}
+
+Create a table with namespace=default and table qualifier=t1
+  hbase> create 't1', {NAME => 'f1'}, {NAME => 'f2'}, {NAME => 'f3'}
+  hbase> # The above in shorthand would be the following:
+  hbase> create 't1', 'f1', 'f2', 'f3'
+  hbase> create 't1', {NAME => 'f1', VERSIONS => 1, TTL => 2592000, BLOCKCACHE => true}
+  hbase> create 't1', {NAME => 'f1', CONFIGURATION => {'hbase.hstore.blockingStoreFiles' => '10'}}
+  
+Table configuration options can be put at the end.
+Examples:
+
+  hbase> create 'ns1:t1', 'f1', SPLITS => ['10', '20', '30', '40']
+  hbase> create 't1', 'f1', SPLITS => ['10', '20', '30', '40']
+  hbase> create 't1', 'f1', SPLITS_FILE => 'splits.txt', OWNER => 'johndoe'
+  hbase> create 't1', {NAME => 'f1', VERSIONS => 5}, METADATA => { 'mykey' => 'myvalue' }
+  hbase> # Optionally pre-split the table into NUMREGIONS, using
+  hbase> # SPLITALGO ("HexStringSplit", "UniformSplit" or classname)
+  hbase> create 't1', 'f1', {NUMREGIONS => 15, SPLITALGO => 'HexStringSplit'}
+  hbase> create 't1', 'f1', {NUMREGIONS => 15, SPLITALGO => 'HexStringSplit', REGION_REPLICATION => 2, CONFIGURATION => {'hbase.hregion.scan.loadColumnFamiliesOnDemand' => 'true'}}
+
+You can also keep around a reference to the created table:
+
+  hbase> t1 = create 't1', 'f1'
+
+Which gives you a reference to the table named 't1', on which you can then
+call methods.
+
+
+hbase(main):003:0> create 'flgt','info','sch'
+0 row(s) in 0.3200 seconds
+
+=> Hbase::Table - flgt
+hbase(main):004:0> list
+TABLE                                                                           
+fl                                                                              
+flgt                                                                            
+flight                                                                          
+flt                                                                             
+4 row(s) in 0.0230 seconds
+
+=> ["fl", "flgt", "flight", "flt"]
+hbase(main):005:0> put 'flgt',1,'info:src','pune'
+0 row(s) in 0.0990 seconds
+
+hbase(main):006:0> put 'flgt',1,'info:des','mumbai'
+0 row(s) in 0.0130 seconds
+
+hbase(main):007:0> put 'flgt',1,'sch:at','10.25 AM'
+0 row(s) in 0.0100 seconds
+
+hbase(main):008:0> put 'flgt',1,'sch:dt','11.25 AM'
+0 row(s) in 0.0090 seconds
+
+hbase(main):009:0> put 'flgt',1,'sch:del','5'
+0 row(s) in 0.0090 seconds
+
+hbase(main):010:0> put 'flgt',2,'info:src','pune'
+0 row(s) in 0.0060 seconds
+
+hbase(main):011:0> put 'flgt',2,'info:des','kolkata'
+0 row(s) in 0.0110 seconds
+
+hbase(main):012:0> put 'flgt',1,'sch:at','07.05 AM'
+0 row(s) in 0.0110 seconds
+
+hbase(main):013:0> put 'flgt',1,'sch:at','10.25 AM'
+0 row(s) in 0.0110 seconds
+
+hbase(main):014:0> put 'flgt',2,'sch:at','07.05 AM'
+0 row(s) in 0.0100 seconds
+
+hbase(main):015:0> put 'flgt',2,'sch:dt','09.45 AM'
+0 row(s) in 0.0090 seconds
+
+hbase(main):016:0> put 'flgt',2,'sch:del','10'
+0 row(s) in 0.0100 seconds
+
+hbase(main):017:0> put 'flgt',3,'info:src','mumbai'
+0 row(s) in 0.0100 seconds
+
+hbase(main):018:0> put 'flgt',3,'info:des','pune'
+0 row(s) in 0.0070 seconds
+
+hbase(main):019:0> put 'flgt',3,'sch:at','11.00 AM'
+0 row(s) in 0.0060 seconds
+
+hbase(main):020:0> put 'flgt',3,'sch:dt','11.50 AM'
+0 row(s) in 0.0260 seconds
+
+hbase(main):021:0> put 'flgt',3,'sch:del','0'
+0 row(s) in 0.0110 seconds
+
+hbase(main):022:0> scan 'flgt'
+ROW                   COLUMN+CELL                                               
+ 1                    column=info:des, timestamp=1680037935161, value=mumbai    
+ 1                    column=info:src, timestamp=1680037919765, value=pune      
+ 1                    column=sch:at, timestamp=1680038078641, value=10.25 AM    
+ 1                    column=sch:del, timestamp=1680037991864, value=5          
+ 1                    column=sch:dt, timestamp=1680037968246, value=11.25 AM    
+ 2                    column=info:des, timestamp=1680038021088, value=kolkata   
+ 2                    column=info:src, timestamp=1680038005913, value=pune      
+ 2                    column=sch:at, timestamp=1680038095712, value=07.05 AM    
+ 2                    column=sch:del, timestamp=1680038135654, value=10         
+ 2                    column=sch:dt, timestamp=1680038121666, value=09.45 AM    
+ 3                    column=info:des, timestamp=1680038259741, value=pune      
+ 3                    column=info:src, timestamp=1680038248758, value=mumbai    
+ 3                    column=sch:at, timestamp=1680038278462, value=11.00 AM    
+ 3                    column=sch:del, timestamp=1680038322269, value=0          
+ 3                    column=sch:dt, timestamp=1680038307659, value=11.50 AM    
+3 row(s) in 0.0470 seconds
+
+hbase(main):023:0> create 'tb1','cf'
+0 row(s) in 0.3900 seconds
+
+=> Hbase::Table - tb1
+hbase(main):024:0> drop 'tb1'
+
+ERROR: Table tb1 is enabled. Disable it first.'
+
+Here is some help for this command:
+Drop the named table. Table must first be disabled:
+  hbase> drop 't1'
+  hbase> drop 'ns1:t1'
+
+
+hbase(main):025:0> list
+TABLE                                                                           
+fl                                                                              
+flgt                                                                            
+flight                                                                          
+flt                                                                             
+tb1                                                                             
+5 row(s) in 0.0120 seconds
+
+=> ["fl", "flgt", "flight", "flt", "tb1"]
+hbase(main):026:0> disable 'tb1'
+0 row(s) in 1.2150 seconds
+
+hbase(main):027:0> drop 'tb1'
+0 row(s) in 0.1790 seconds
+
+hbase(main):028:0> list
+TABLE                                                                           
+fl                                                                              
+flgt                                                                            
+flight                                                                          
+flt                                                                             
+4 row(s) in 0.0110 seconds
+
+=> ["fl", "flgt", "flight", "flt"]
+hbase(main):029:0> get 'flgt',1
+COLUMN                CELL                                                      
+ info:des             timestamp=1680037935161, value=mumbai                     
+ info:src             timestamp=1680037919765, value=pune                       
+ sch:at               timestamp=1680038078641, value=10.25 AM                   
+ sch:del              timestamp=1680037991864, value=5                          
+ sch:dt               timestamp=1680037968246, value=11.25 AM                   
+5 row(s) in 0.0320 seconds
+
+hbase(main):030:0> get 'flgt',2,'COLUMN=>'info:src'
+hbase(main):031:0' 
+hbase(main):032:0' ;
+hbase(main):033:0' SyntaxError: (hbase):30: syntax error, unexpected tIDENTIFIER
+
+get 'flgt',2,'COLUMN=>'info:src'
+                          ^
+
+hbase(main):033:0> get 'flgt',2,'COLUMNS=>'info:src'
+hbase(main):034:0' hbase(main):034:0> 
+SyntaxError: (hbase):33: syntax error, unexpected tIDENTIFIER
+
+get 'flgt',2,'COLUMNS=>'info:src'
+                           ^
+
+hbase(main):035:0> get 'flgt',2,'COLUMN=>['info:src']
+hbase(main):036:0' hbase(main):036:0> 
+SyntaxError: (hbase):35: syntax error, unexpected tIDENTIFIER
+
+get 'flgt',2,'COLUMN=>['info:src']
+                           ^
+
+hbase(main):037:0> get 'flgt',1,'COLUMN=>['info:src','info:des']
+hbase(main):038:0' hbase(main):038:0> 
+SyntaxError: (hbase):37: syntax error, unexpected tIDENTIFIER
+
+get 'flgt',1,'COLUMN=>['info:src','info:des']
+                           ^
+
+hbase(main):039:0> create 'emphive','cf'
+0 row(s) in 0.4240 seconds
+
+=> Hbase::Table - emphive
+hbase(main):040:0> scan 'emphive'
+ROW                   COLUMN+CELL                                               
+ 1234                 column=cf:name, timestamp=1680040719322, value=2008       
+ 1235                 column=cf:name, timestamp=1680040719322, value=2008       
+ 1236                 column=cf:name, timestamp=1680040719322, value=2008       
+ 1237                 column=cf:name, timestamp=1680040719322, value=2008       
+4 row(s) in 0.0230 seconds
+
+hbase(main):041:0> 

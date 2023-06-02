@@ -1,0 +1,105 @@
+#Read csv
+import pandas as pd
+air = pd.read_csv('airquality.csv')
+air.columns.to_list()
+air.head()
+air.shape
+
+#Drop the unnamed column
+air.drop(['Unnamed: 0'],axis=1,inplace=True)
+
+#Null values
+air.isnull().sum()
+A = air.fillna(method='pad')
+A = air.fillna(method='backfill')
+
+#Replace null values using numpy
+A = air['Ozone'].replace(np.NaN,air['Ozone'].mean())
+A = air['Ozone'].replace(np.NaN,air['Ozone'].median())
+A = air['Ozone'].replace(np.NaN,air['Ozone'].mode()[0])
+
+#Drop the missing values in air dataframe
+air.dropna(inplace=True)
+
+
+#Impute the missing values
+from sklearn.impute import SimpleImputer
+# Create a SimpleImputer object with the desired strategy (e.g., mean, median, most_frequent)
+imputer = SimpleImputer(strategy='mean')
+# Fit the imputer to the dataset and transform the missing values
+air_imputed = imputer.fit_transform(air)
+# Convert the imputed data back into a DataFrame
+air_imputed_df = pd.DataFrame(air_imputed, columns=air.columns)
+# Check the updated DataFrame
+air_imputed_df.head()
+
+# Select the columns to be transformed
+columns_to_transform = ['Ozone', 'Solar.R', 'Wind', 'Temp', 'Month', 'Day']
+
+from sklearn.preprocessing import StandardScaler
+# Create a StandardScaler object
+scaler = StandardScaler()
+# Apply StandardScaler transformation to the selected columns
+air_standard_scaled = scaler.fit_transform(air[columns_to_transform])
+# Convert the scaled data into a DataFrame
+air_standard_scaled_df = pd.DataFrame(air_standard_scaled, columns=columns_to_transform)
+# Describe the StandardScaler DataFrame
+air_standard_scaled_df.describe()
+
+from sklearn.preprocessing import MinMaxScaler
+# Create a MinMaxScaler object
+scaler = MinMaxScaler()
+# Apply MinMaxScaler transformation to the selected columns
+air_minmax_scaled = scaler.fit_transform(air[columns_to_transform])
+# Convert the scaled data into a DataFrame
+air_minmax_scaled_df = pd.DataFrame(air_minmax_scaled, columns=columns_to_transform)
+# Describe the MinMaxScaler DataFrame
+air_minmax_scaled_df.describe()
+
+from sklearn.preprocessing import Binarizer
+# Create a Binarizer object with the desired threshold
+binarizer = Binarizer(threshold=0.5)
+# Apply Binarizer transformation to the selected columns
+air_binarized = binarizer.transform(air[columns_to_transform])
+# Convert the binarized data into a DataFrame
+air_binarized_df = pd.DataFrame(air_binarized, columns=columns_to_transform)
+# Describe the Binarizer DataFrame
+air_binarized_df.describe()
+
+from sklearn.linear_model import LinearRegression
+# Split the data into features (X) and target variable (Y)
+X = air[['Ozone']]
+Y = air['Temp']
+# Create a LinearRegression model
+model = LinearRegression()
+# Fit the model to the data
+model.fit(X, Y)
+
+import matplotlib.pyplot as plt
+# Make predictions on the features
+predictions = model.predict(X)
+# Create a scatter plot to show the original data points
+plt.scatter(X['Ozone'], Y, color='blue', label='Actual')
+# Plot the line representing the regression model
+plt.plot(X['Ozone'], predictions, color='red',  label='Regression Line')
+# Set labels and title for the plot
+plt.xlabel('Ozone')
+plt.ylabel('Temperature')
+plt.title('Linear Regression')
+# Add a legend
+plt.legend()
+# Show the plot
+plt.show()
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+# Create a LinearRegression model
+model = LinearRegression()
+# Fit the model to the training data
+model.fit(X_train, y_train)
+# Calculate the score (R-squared) on the testing data
+score = model.score(X_test, y_test)
+print("R-squared score:", score)
+
