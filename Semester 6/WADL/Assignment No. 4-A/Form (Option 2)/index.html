@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  </head>
+  <body>
+    <!-- First Page -->
+    <div data-role="page" id="page1">
+      <div data-role="header">
+        <h1>Form Page</h1>
+      </div>
+
+      <div data-role="main" class="ui-content">
+        <form id="myForm">
+          <div data-role="fieldcontain">
+            <label for="name">Name:</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter your name"
+            />
+          </div>
+          <div data-role="fieldcontain">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter your email"
+            />
+          </div>
+          <button type="submit" data-theme="b" id="submitButton">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Second Page -->
+    <div data-role="page" id="page2">
+      <div data-role="header">
+        <h1>Hidden Button Page</h1>
+      </div>
+
+      <div data-role="main" class="ui-content">
+        <p>The button has been clicked and is now hidden.</p>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        // Hide the submit button when clicked
+        $("#myForm").submit(function () {
+          $("#submitButton").hide();
+          // Redirect to the second page
+          $.mobile.changePage("#page2");
+          return false;
+        });
+      });
+    </script>
+  </body>
+</html>
