@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OMDB APP</title>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  </head>
+  <body>
+    <div data-role="page" id="home">
+      <div data-role="header" data-theme="b">
+        <h1>Movie Listing</h1>
+      </div>
+      <div data-role="content">
+        <form id="searchForm">
+          <div class="ui-field-contain">
+            <input
+              type="text"
+              name="search"
+              id="search"
+              placeholder="Search Movie.."
+            />
+          </div>
+        </form>
+        <br>
+        <ul id="movieList" data-role="listview"></ul>
+      </div>
+      <div data-role="footer" style="text-align: center" data-theme="b">
+        <p>OMDB App</p>
+      </div>
+    </div>
+    <script src="./js/api.js"></script>
+  </body>
+</html>
