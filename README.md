@@ -17,4 +17,8 @@
 | 6 | [Semester 5 DAA LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%205/DAA) |
 | 7 | [Semester 5 MACHINE LEARNING LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%205/ML)|
 | 8 | [Semester 5 OPEARTING SYSTEM LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%205/OS)|
+| 9 | [Semester 6 CLOUD COMPUTING (ELECTIVE)](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%206/Cloud%20Computing%20(Elective))|
+| 10 | [Semester 6 DSBDA LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%206/DSBDAL)|
+| 11 | [Semester 6 WAD LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%206/WADL)|
+| 12 | [Semester 7 DEEP LEARNING LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%207/Deep%20Learning)|
 
