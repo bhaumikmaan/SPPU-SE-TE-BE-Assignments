@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       <title>Calculator Web App</title>
+   </head>
+   <body>
+       <h1>Calculator Web App</h1>
+       <form action="/calculate" method="POST">
+           <label for="num1">Number 1:</label>
+           <input type="number" id="num1" name="num1" required /><br />
+
+           <label for="num2">Number 2:</label>
+           <input type="number" id="num2" name="num2" required /><br />
+
+           <label for="operation">Operation:</label>
+           <select id="operation" name="operation" required>
+               <option value="add">Addition</option>
+               <option value="subtract">Subtraction</option>
+               <option value="multiply">Multiplication</option>
+               <option value="divide">Division</option></select
+           ><br />
+
+           <input type="submit" value="Calculate" />
+       </form>
+   </body>
+</html>
