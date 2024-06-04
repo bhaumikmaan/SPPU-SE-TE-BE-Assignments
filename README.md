@@ -1,7 +1,7 @@
 
-<h1 align="middle"> :grey_exclamation: SPPU SE & TE Assignments :grey_exclamation: </h1>
-<p align ="middle"> A repository for assignments in Second year and Third year of Information Technology of SPPU! <br>
-<b><i>Do star the Repository if you feel it helped & drop a follow!</b></i><br><br>
+<h1 align="middle"> :grey_exclamation: SPPU SE, TE & BE Assignments :grey_exclamation: </h1>
+<p align ="middle"> A repository for assignments in Second, Third and Final year of Information Technology of SPPU! <br>
+<b><i>Do star the Repository if you feel it helped & drop a follow!</b></i> <br><br>
 <i>Please refer to the README's or Lab Manuals to find the assignment you wish for. </i> <br>
 :black_heart: <b> Happy Learning </b> :black_heart:
 <br></p>
@@ -21,4 +21,5 @@
 | 10 | [Semester 6 DSBDA LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%206/DSBDAL)|
 | 11 | [Semester 6 WAD LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%206/WADL)|
 | 12 | [Semester 7 DEEP LEARNING LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%207/Deep%20Learning)|
+| 13 | [Semester 8 DISTRIBUTED SYSTEMS LAB](https://github.com/bhaumikmaan/SPPU-SE-TE-Assignments/tree/main/Semester%208/Distributed%20Systems)|
 
